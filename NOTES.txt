@@ -1,0 +1,11 @@
+User gets token from OAuth
+
+sends all requests to this service
+
+gets profile data(with token)
+
+get track/artist info and reorganize it
+    -this is the real work
+    -
+build up errors and return those
+ -if calling spotify api fails, report to UI
