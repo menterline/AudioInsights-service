@@ -1,27 +1,27 @@
 package com.audio_insights_service.controllers
 
-import com.audio_insights_service.entities.*
-import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
-import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.*
-import org.springframework.web.reactive.function.client.WebClient
-import org.springframework.web.reactive.function.client.awaitBody
+import com.audio_insights_service.entities.TopItems
+import com.audio_insights_service.entities.UserProfile
+import com.audio_insights_service.services.ISpotifyService
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
+
 
 
 @RestController
 @RequestMapping("/api/profile")
-class SpotifyController() {
+class SpotifyController(private val spotifyService: ISpotifyService) {
 
     @GetMapping("/")
     suspend fun fetchProfile(@RequestHeader("Authorization") bearerToken: String): UserProfile  {
-        val client = WebClient.create("https://api.spotify.com")
-        val req = client.get()
-            .uri("/v1/me").accept(MediaType.APPLICATION_JSON)
-            .header("Authorization", bearerToken)
-        val result = req
-            .retrieve()
-            .awaitBody<UserProfile>()
-        return result
+        return spotifyService.fetchProfile(bearerToken)
+    }
+
+    @GetMapping("/topItems")
+    suspend fun fetchTopItems(@RequestHeader("Authorization") bearerToken: String, @RequestParam term: String): TopItems {
+        return spotifyService.fetchTopItems(bearerToken, term)
     }
 }
