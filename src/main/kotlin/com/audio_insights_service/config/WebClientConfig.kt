@@ -10,18 +10,29 @@ import org.springframework.web.reactive.function.client.WebClient
 
 @Configuration
 class WebClientConfig {
-    @Bean
-    fun spotifyWebClient(): WebClient {
-        return WebClient.builder().baseUrl("https://api.spotify.com")
-            .build()
-    }
-    @Bean
-    fun spotifyRepository(): ISpotifyRepository {
-        return SpotifyRepository(spotifyWebClient())
-    }
 
     @Bean
-    fun spotifyService(): ISpotifyService {
-        return SpotifyService(spotifyRepository())
+    fun spotifyWebClient(): WebClient {
+        return WebClient.builder()
+            .baseUrl("https://api.spotify.com")
+            .build()
+    }
+}
+
+@Configuration
+class RepositoryConfig {
+
+    @Bean
+    fun spotifyRepository(webClient: WebClient): ISpotifyRepository {
+        return SpotifyRepository(webClient)
+    }
+}
+
+@Configuration
+class ServiceConfig {
+
+    @Bean
+    fun spotifyService(spotifyRepository: ISpotifyRepository): ISpotifyService {
+        return SpotifyService(spotifyRepository)
     }
 }
