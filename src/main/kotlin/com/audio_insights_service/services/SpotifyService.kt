@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam
 class SpotifyService(private val spotifyRepository: ISpotifyRepository): ISpotifyService {
 
     override suspend fun fetchProfile(bearerToken: String): UserProfile {
-        return createTestUserProfile()
+        return spotifyRepository.fetchProfile(bearerToken)
     }
 
     override suspend fun fetchTopItems(bearerToken: String, term: String): TopItems {
