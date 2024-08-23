@@ -17,15 +17,6 @@ data class Image(
     val width: Int?
 )
 
-data class TopItemsResponse<T>(
-    val items: List<T>,
-    val total: Int,
-    val limit: Int,
-    val offset: Int,
-    val href: String,
-    val previous: String?,
-    val next: String?
-)
 
 data class Artist(
     val id: String,
