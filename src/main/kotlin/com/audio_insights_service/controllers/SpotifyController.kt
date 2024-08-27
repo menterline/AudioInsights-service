@@ -1,16 +1,14 @@
 package com.audio_insights_service.controllers
 
 import com.audio_insights_service.entities.TopItems
+import com.audio_insights_service.entities.TrackAnalysisNode
 import com.audio_insights_service.entities.UserProfile
 import com.audio_insights_service.services.ISpotifyService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/profile")
+@CrossOrigin(origins = ["http://localhost:5173"])
 class SpotifyController(private val spotifyService: ISpotifyService) {
 
     @GetMapping("/")
@@ -22,4 +20,11 @@ class SpotifyController(private val spotifyService: ISpotifyService) {
     suspend fun fetchTopItems(@RequestHeader("Authorization") bearerToken: String, @RequestParam term: String): TopItems {
         return spotifyService.fetchTopItems(bearerToken, term)
     }
+
+    @GetMapping("/tracksAnalysis")
+    suspend fun fetchTracksAnalysis(@RequestHeader("Authorization") bearerToken: String, @RequestParam trackIds: List<String>): List<TrackAnalysisNode> {
+        return spotifyService.fetchTrackAnalysis(bearerToken, trackIds)
+    }
+
+
 }

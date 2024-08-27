@@ -23,15 +23,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.3")
-
 	implementation("ch.qos.logback:logback-classic:1.4.11")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("io.mockk:mockk:1.13.4")
-	testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:3.0.1") {
-		exclude(group = "org.slf4j", module = "slf4j-api")
-		exclude(group = "org.slf4j", module = "slf4j-simple")
-	}
+	testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:3.0.1")
 }
 
 kotlin {

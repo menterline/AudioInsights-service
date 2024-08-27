@@ -21,9 +21,9 @@ data class Image(
 data class Artist(
     val id: String,
     val name: String,
-    val genres: List<String>,
+    val genres: List<String>?,
     val href: String,
-    val images: List<Image>,
+    val images: List<Image>?,
     val popularity: Int,
     val type: String,
     val uri: String

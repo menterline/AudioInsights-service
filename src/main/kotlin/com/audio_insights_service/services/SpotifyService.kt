@@ -3,6 +3,7 @@ package com.audio_insights_service.services
 import com.audio_insights_service.entities.*
 import com.audio_insights_service.repositories.ISpotifyRepository
 
+
 class SpotifyService(private val spotifyRepository: ISpotifyRepository) : ISpotifyService {
 
   override suspend fun fetchProfile(bearerToken: String): UserProfile {
@@ -33,5 +34,23 @@ class SpotifyService(private val spotifyRepository: ISpotifyRepository) : ISpoti
     term: String,
   ): TopItemsResponse<Artist> {
     return spotifyRepository.fetchTopArtists(bearerToken, term);
+  }
+
+  override suspend fun fetchTrackAnalysis(bearerToken: String, trackIds: List<String>): List<TrackAnalysisNode> {
+    val audioFeatures = spotifyRepository.fetchTracksAnalysis(bearerToken, trackIds);
+    val avgDanceability = audioFeatures.audio_features.map { it -> it.danceability }.average()
+    val avgEnergy = audioFeatures.audio_features.map { it -> it.energy }.average()
+    val avgLoudness = audioFeatures.audio_features.map { it -> it.loudness }.average()
+    val avgSpeechiness = audioFeatures.audio_features.map { it -> it.speechiness }.average()
+    val avgInstrumentalness = audioFeatures.audio_features.map { it -> it.instrumentalness }.average()
+    val avgLiveness = audioFeatures.audio_features.map { it -> it.liveness }.average()
+    return listOf(
+      TrackAnalysisNode(avgDanceability, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
+      TrackAnalysisNode(avgEnergy, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
+      TrackAnalysisNode(avgLoudness, AudioFeatureKeys.LOUDNESS, LOUDNESS_DESCRIPTION),
+      TrackAnalysisNode(avgSpeechiness, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
+      TrackAnalysisNode(avgInstrumentalness, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
+      TrackAnalysisNode(avgLiveness, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
+    )
   }
 }

@@ -3,13 +3,14 @@ package com.audio_insights_service.repositories
 import com.audio_insights_service.entities.*
 import com.audio_insights_service.factories.createDummyTopArtistResponse
 import com.audio_insights_service.factories.createDummyTopTracksResponse
+import com.audio_insights_service.repositories.mockData.createDummyAudioFeatures
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
-import java.nio.file.Paths
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.web.reactive.function.client.WebClient
+import java.nio.file.Paths
 
 @WireMockTest(httpPort = 8080)
 class SpotifyRepositoryTest {
@@ -54,7 +55,8 @@ class SpotifyRepositoryTest {
     assertEquals(dummyUserProfile.toString(), result.toString())
   }
 
-  @Test fun `fetchTopTracks - need to implement`() = runBlocking {
+  @Test
+  fun `fetchTopTracks - need to implement`() = runBlocking {
     val mockResponseJson =
       Paths.get("./")
         .toAbsolutePath()
@@ -92,5 +94,26 @@ class SpotifyRepositoryTest {
 
     val result = repository.fetchTopArtists("Bearer mockToken", "short_term")
 
-    assertEquals(createDummyTopArtistResponse().toString(), result.toString())  }
+    assertEquals(createDummyTopArtistResponse().toString(), result.toString())
+  }
+
+  @Test
+  fun `fetchTracksAnalysis`() = runBlocking {
+    val mockResponseJson =
+      Paths.get("./")
+        .toAbsolutePath()
+        .resolve(
+          "src/test/kotlin/com/audio_insights_service/repositories/resources/dummyAudioFeaturesResponse.json"
+        )
+        .toFile()
+        .readText()
+
+    stubFor(get("/v1/audio-features?ids=13Pjj0X0F6TVP6RaQTRX8rR&ids=2dNd2SIsf2G9yZJKUvk8jZ&ids=5nQRjPmBn5foHzXI78qv5K").willReturn(okJson(mockResponseJson)))
+
+    val webClient = WebClient.builder().baseUrl(wireMockServerUrl).build()
+    val repository = SpotifyRepository(webClient)
+
+    val result= repository.fetchTracksAnalysis("Bearer mockToken", listOf("13Pjj0X0F6TVP6RaQTRX8rR", "2dNd2SIsf2G9yZJKUvk8jZ", "5nQRjPmBn5foHzXI78qv5K"))
+    assertEquals(createDummyAudioFeatures().toString(), result.toString())
+  }
 }

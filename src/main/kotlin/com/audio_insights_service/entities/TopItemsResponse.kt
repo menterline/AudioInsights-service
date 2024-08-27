@@ -11,6 +11,6 @@ data class TopItemsResponse<T>(
 ) {
   // hacky solution so that we can only call this with lists of artists
   fun getGenres(artists: List<Artist>): List<String> {
-    return artists.flatMap { it.genres }
+    return artists.flatMap { it.genres.orEmpty() }
   }
 }
