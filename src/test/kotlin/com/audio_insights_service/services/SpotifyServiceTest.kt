@@ -89,12 +89,12 @@ class SpotifyServiceTest {
     val expectedAvgLiveness = (.116 + .0899 + .0741) / 3
 
     val expectedNodes = listOf(
-      TrackAnalysisNode(expectedAvgDanceability, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgEnergy, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
+      TrackAnalysisNode(expectedAvgDanceability * 100, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
+      TrackAnalysisNode(expectedAvgEnergy * 100, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
       TrackAnalysisNode(expectedAvgLoudness, AudioFeatureKeys.LOUDNESS, LOUDNESS_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgSpeechiness, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgInstrumentalness, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgLiveness, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
+      TrackAnalysisNode(expectedAvgSpeechiness * 100, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
+      TrackAnalysisNode(expectedAvgInstrumentalness * 100, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
+      TrackAnalysisNode(expectedAvgLiveness * 100, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
     )
     assertEquals(expectedNodes, service.fetchTrackAnalysis("ABC", listOf("1", "2" , "3")))
   }

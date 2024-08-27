@@ -22,8 +22,8 @@ class SpotifyController(private val spotifyService: ISpotifyService) {
     }
 
     @GetMapping("/tracksAnalysis")
-    suspend fun fetchTracksAnalysis(@RequestHeader("Authorization") bearerToken: String, @RequestParam trackIds: List<String>): List<TrackAnalysisNode> {
-        return spotifyService.fetchTrackAnalysis(bearerToken, trackIds)
+    suspend fun fetchTracksAnalysis(@RequestHeader("Authorization") bearerToken: String, @RequestParam ids: List<String>): List<TrackAnalysisNode> {
+        return spotifyService.fetchTrackAnalysis(bearerToken, ids)
     }
 
 

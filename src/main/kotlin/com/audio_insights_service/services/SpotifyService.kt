@@ -45,12 +45,12 @@ class SpotifyService(private val spotifyRepository: ISpotifyRepository) : ISpoti
     val avgInstrumentalness = audioFeatures.audio_features.map { it -> it.instrumentalness }.average()
     val avgLiveness = audioFeatures.audio_features.map { it -> it.liveness }.average()
     return listOf(
-      TrackAnalysisNode(avgDanceability, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
-      TrackAnalysisNode(avgEnergy, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
+      TrackAnalysisNode(avgDanceability * 100, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
+      TrackAnalysisNode(avgEnergy * 100, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
       TrackAnalysisNode(avgLoudness, AudioFeatureKeys.LOUDNESS, LOUDNESS_DESCRIPTION),
-      TrackAnalysisNode(avgSpeechiness, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
-      TrackAnalysisNode(avgInstrumentalness, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
-      TrackAnalysisNode(avgLiveness, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
+      TrackAnalysisNode(avgSpeechiness * 100, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
+      TrackAnalysisNode(avgInstrumentalness * 100, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
+      TrackAnalysisNode(avgLiveness * 100, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
     )
   }
 }
