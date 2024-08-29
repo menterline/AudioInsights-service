@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/profile")
-@CrossOrigin(origins = ["http://localhost:5173"])
+@CrossOrigin(origins = ["*"], allowedHeaders = ["*"], methods = [RequestMethod.GET])
 class SpotifyController(private val spotifyService: ISpotifyService) {
 
     @GetMapping("/")

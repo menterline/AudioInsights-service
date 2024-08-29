@@ -23,11 +23,12 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.7.3")
-	implementation("ch.qos.logback:logback-classic:1.4.11")
+	implementation("ch.qos.logback:logback-classic:1.4.11")  // Logback binding for SLF4J
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("io.mockk:mockk:1.13.4")
-	testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:3.0.1")
+	testImplementation("org.mock-server:mockserver-netty:5.14.0")
 }
 
 kotlin {
