@@ -1,9 +1,9 @@
 package com.audio_insights_service.repositories
 
-import com.audio_insights_service.entities.*
 import com.audio_insights_service.factories.createDummyTopArtistResponse
 import com.audio_insights_service.factories.createDummyTopTracksResponse
 import com.audio_insights_service.repositories.mockData.createDummyAudioFeatures
+import com.audio_insights_service.repositories.mockData.dummyUserProfile
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -34,23 +34,7 @@ class SpotifyRepositoryTest {
 
   @Test
   fun `fetchProfile`() = runBlocking {
-    val dummyUserProfile =
-      UserProfile(
-        country = "US",
-        display_name = "John Doe",
-        email = "johndoe@example.com",
-        explicit_content = ExplicitContent(filter_enabled = true, filter_locked = false),
-        external_urls = ExternalURL(spotify = "https://open.spotify.com/user/johndoe"),
-        followers =
-          Followers(href = "https://api.spotify.com/v1/users/johndoe/followers", total = 1500),
-        href = "https://api.spotify.com/v1/users/johndoe",
-        id = "johndoe",
-        images =
-          arrayOf(Image(url = "https://i.scdn.co/image/abcd1234", height = 300, width = 300)),
-        product = "premium",
-        type = "user",
-        uri = "spotify:user:johndoe",
-      )
+    val dummyUserProfile = dummyUserProfile
 
     val mockProfileJson =
       Paths.get("./")
@@ -66,9 +50,7 @@ class SpotifyRepositoryTest {
       .respond(
         HttpResponse.response()
           .withStatusCode(200)
-          .withHeader(
-            header("Content-Type", "application/json")
-          )
+          .withHeader(header("Content-Type", "application/json"))
           .withBody(mockProfileJson)
       )
 
@@ -96,9 +78,7 @@ class SpotifyRepositoryTest {
       .respond(
         HttpResponse.response()
           .withStatusCode(200)
-          .withHeader(
-            header("Content-Type", "application/json")
-          )
+          .withHeader(header("Content-Type", "application/json"))
           .withBody(mockResponseJson)
       )
 
@@ -109,8 +89,6 @@ class SpotifyRepositoryTest {
 
     assertEquals(createDummyTopTracksResponse().toString(), result.toString())
   }
-
-
 
   @Test
   fun `fetchTopArtists`() = runBlocking {
@@ -128,9 +106,7 @@ class SpotifyRepositoryTest {
       .respond(
         HttpResponse.response()
           .withStatusCode(200)
-          .withHeader(
-            header("Content-Type", "application/json")
-          )
+          .withHeader(header("Content-Type", "application/json"))
           .withBody(mockResponseJson)
       )
 
@@ -154,24 +130,33 @@ class SpotifyRepositoryTest {
         .readText()
 
     MockServerClient("localhost", 8080)
-      .`when`(request().withMethod("GET").withPath("/v1/audio-features").withQueryStringParameters(
-        listOf(Parameter.param("ids","13Pjj0X0F6TVP6RaQTRX8rR" ), Parameter.param("ids","2dNd2SIsf2G9yZJKUvk8jZ" ), Parameter.param("ids","2dNd2SIsf2G9yZJKUvk8jZ" ))
-      ))
-
+      .`when`(
+        request()
+          .withMethod("GET")
+          .withPath("/v1/audio-features")
+          .withQueryStringParameters(
+            listOf(
+              Parameter.param("ids", "13Pjj0X0F6TVP6RaQTRX8rR"),
+              Parameter.param("ids", "2dNd2SIsf2G9yZJKUvk8jZ"),
+              Parameter.param("ids", "2dNd2SIsf2G9yZJKUvk8jZ"),
+            )
+          )
+      )
       .respond(
         HttpResponse.response()
           .withStatusCode(200)
-          .withHeader(
-            header("Content-Type", "application/json")
-          )
+          .withHeader(header("Content-Type", "application/json"))
           .withBody(mockResponseJson)
       )
 
     val webClient = WebClient.builder().baseUrl("http://localhost:8080").build()
     val repository = SpotifyRepository(webClient)
 
-    val result= repository.fetchTracksAnalysis("Bearer mockToken", listOf("13Pjj0X0F6TVP6RaQTRX8rR", "2dNd2SIsf2G9yZJKUvk8jZ", "5nQRjPmBn5foHzXI78qv5K"))
+    val result =
+      repository.fetchTracksAnalysis(
+        "Bearer mockToken",
+        listOf("13Pjj0X0F6TVP6RaQTRX8rR", "2dNd2SIsf2G9yZJKUvk8jZ", "5nQRjPmBn5foHzXI78qv5K"),
+      )
     assertEquals(createDummyAudioFeatures().toString(), result.toString())
   }
-
 }

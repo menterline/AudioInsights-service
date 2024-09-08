@@ -2,8 +2,9 @@ package com.audio_insights_service.services
 
 import com.audio_insights_service.entities.*
 import com.audio_insights_service.repositories.ISpotifyRepository
+import org.springframework.stereotype.Service
 
-
+@Service
 class SpotifyService(private val spotifyRepository: ISpotifyRepository) : ISpotifyService {
 
   override suspend fun fetchProfile(bearerToken: String): UserProfile {
