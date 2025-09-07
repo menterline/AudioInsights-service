@@ -51,14 +51,14 @@ class SpotifyRepository(private val spotifyWebClient: WebClient) : ISpotifyRepos
     return result
   }
 
-  override suspend fun fetchTopTracks(bearerToken: String, term: String): TopItemsResponse<Track> {
+  override suspend fun fetchTopTracks(bearerToken: String, term: String): TopItemsResponse<SpotifyTrack> {
     val req =
       spotifyWebClient
         .get()
         .uri("/v1/me/top/tracks")
         .accept(MediaType.APPLICATION_JSON)
         .header("Authorization", bearerToken)
-    val result = req.retrieve().awaitBody<TopItemsResponse<Track>>()
+    val result = req.retrieve().awaitBody<TopItemsResponse<SpotifyTrack>>()
     return result
   }
 

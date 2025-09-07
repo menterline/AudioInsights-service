@@ -20,11 +20,4 @@ class SpotifyController(private val spotifyService: ISpotifyService) {
     suspend fun fetchTopItems(@RequestHeader("Authorization") bearerToken: String, @RequestParam term: String): TopItems {
         return spotifyService.fetchTopItems(bearerToken, term)
     }
-
-    @GetMapping("/tracksAnalysis")
-    suspend fun fetchTracksAnalysis(@RequestHeader("Authorization") bearerToken: String, @RequestParam ids: List<String>): List<TrackAnalysisNode> {
-        return spotifyService.fetchTrackAnalysis(bearerToken, ids)
-    }
-
-
 }

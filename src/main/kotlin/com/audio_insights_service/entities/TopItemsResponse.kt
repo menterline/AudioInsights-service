@@ -9,8 +9,19 @@ data class TopItemsResponse<T>(
   val previous: String?,
   val next: String?,
 ) {
-  // hacky solution so that we can only call this with lists of artists
   fun getGenres(artists: List<Artist>): List<String> {
     return artists.flatMap { it.genres.orEmpty() }
+  }
+
+  fun convertItems(tracks: List<SpotifyTrack>): TopItemsResponse<Track> {
+    return TopItemsResponse(
+      items = tracks.map {it.toTrack()},
+      total = total,
+      limit = limit,
+      offset = offset,
+      href = href,
+      previous = previous,
+      next = next
+    )
   }
 }

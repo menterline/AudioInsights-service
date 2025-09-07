@@ -28,29 +28,6 @@ class SpotifyControllerTest {
         assertEquals(mockTopItemsResponse, controller.fetchTopItems("Bearer mockToken", "short_term"))
     }
 
-    @Test
-    fun fetchTracksAnalysis() = runBlocking {
-        val expectedAvgDanceability = (.712 + .504 + .527) / 3
-        val expectedAvgEnergy = (.888 + .826 + .566) / 3
-        val expectedAvgLoudness = (-4.996 + -3.105 + -8.021) / 3
-        val expectedAvgSpeechiness = (.0621 + .0816 + .284) / 3
-        val expectedAvgInstrumentalness = (.000614 + .000359 + .0191) / 3
-        val expectedAvgLiveness = (.116 + .0899 + .0741) / 3
-
-        val mockServiceResult = listOf(
-            TrackAnalysisNode(expectedAvgDanceability, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
-            TrackAnalysisNode(expectedAvgEnergy, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
-            TrackAnalysisNode(expectedAvgLoudness, AudioFeatureKeys.LOUDNESS, LOUDNESS_DESCRIPTION),
-            TrackAnalysisNode(expectedAvgSpeechiness, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
-            TrackAnalysisNode(expectedAvgInstrumentalness, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
-            TrackAnalysisNode(expectedAvgLiveness, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
-        )
-
-        val service = mockk<ISpotifyService>()
-        coEvery { service.fetchTrackAnalysis("Bearer mockToken", listOf("1", "2", "3"))} returns mockServiceResult
-        val controller = SpotifyController(service)
-        assertEquals(mockServiceResult, controller.fetchTracksAnalysis("Bearer mockToken", listOf("1", "2", "3")))
-    }
 
     private val dummyUserProfile = UserProfile(
         country = "US",

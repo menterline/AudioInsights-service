@@ -1,5 +1,8 @@
 package com.audio_insights_service.entities
 
+import com.fasterxml.jackson.annotation.JsonProperty
+import java.util.Objects
+
 data class ExplicitContent (
     val filter_enabled: Boolean,
     val filter_locked: Boolean
@@ -29,7 +32,7 @@ data class Artist(
     val uri: String
 )
 
-data class Track(
+data class SpotifyTrack(
     val id: String,
     val name: String,
     val album: Album,
@@ -41,8 +44,24 @@ data class Track(
     val preview_url: String?,
     val track_number: Int,
     val type: String,
-    val uri: String
-)
+    val uri: String,
+    @JsonProperty("external_urls")
+    val externalUrls: LinkedHashMap<String, String>
+) {
+    fun toTrack(): Track {
+        return Track(
+            id = id,
+            name = name,
+            album = album,
+            artists = artists,
+            href = href,
+            popularity = popularity,
+            previewUrl = preview_url,
+            type = type,
+            spotifyUrl = externalUrls.get("spotify")
+        )
+    }
+}
 
 data class Album(
     val id: String,

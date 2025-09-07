@@ -74,28 +74,4 @@ class SpotifyServiceTest {
     val service = SpotifyService(repository)
     assertEquals(mockResponse, service.fetchTopArtists("ABC", "short_term"))
   }
-
-  @Test
-  fun fetchTracksAnalysis() = runBlocking {
-    val mockResponse = createDummyAudioFeatures()
-    val repository = mockk<ISpotifyRepository>()
-    coEvery { repository.fetchTracksAnalysis("ABC", listOf("1", "2", "3")) } returns mockResponse
-    val service = SpotifyService(repository)
-    val expectedAvgDanceability = (.712 + .504 + .527) / 3
-    val expectedAvgEnergy = (.888 + .826 + .566) / 3
-    val expectedAvgLoudness = (-4.996 + -3.105 + -8.021) / 3
-    val expectedAvgSpeechiness = (.0621 + .0816 + .284) / 3
-    val expectedAvgInstrumentalness = (.000614 + .000359 + .0191) / 3
-    val expectedAvgLiveness = (.116 + .0899 + .0741) / 3
-
-    val expectedNodes = listOf(
-      TrackAnalysisNode(expectedAvgDanceability * 100, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgEnergy * 100, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgLoudness, AudioFeatureKeys.LOUDNESS, LOUDNESS_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgSpeechiness * 100, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgInstrumentalness * 100, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
-      TrackAnalysisNode(expectedAvgLiveness * 100, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
-    )
-    assertEquals(expectedNodes, service.fetchTrackAnalysis("ABC", listOf("1", "2" , "3")))
-  }
 }

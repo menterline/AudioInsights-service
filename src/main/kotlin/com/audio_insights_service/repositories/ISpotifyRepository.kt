@@ -6,7 +6,7 @@ interface ISpotifyRepository {
 
     suspend fun fetchProfile(bearerToken: String): UserProfile;
 
-    suspend fun fetchTopTracks(bearerToken: String, term: String): TopItemsResponse<Track> ;
+    suspend fun fetchTopTracks(bearerToken: String, term: String): TopItemsResponse<SpotifyTrack> ;
 
     suspend fun fetchTopArtists(bearerToken: String, term: String): TopItemsResponse<Artist>;
 

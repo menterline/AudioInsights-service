@@ -27,7 +27,8 @@ class SpotifyService(private val spotifyRepository: ISpotifyRepository) : ISpoti
   }
 
   override suspend fun fetchTopTracks(bearerToken: String, term: String): TopItemsResponse<Track> {
-    return spotifyRepository.fetchTopTracks(bearerToken, term);
+   val spotifyTopTracks = spotifyRepository.fetchTopTracks(bearerToken, term)
+    return spotifyTopTracks.convertItems(spotifyTopTracks.items)
   }
 
   override suspend fun fetchTopArtists(
@@ -35,23 +36,5 @@ class SpotifyService(private val spotifyRepository: ISpotifyRepository) : ISpoti
     term: String,
   ): TopItemsResponse<Artist> {
     return spotifyRepository.fetchTopArtists(bearerToken, term);
-  }
-
-  override suspend fun fetchTrackAnalysis(bearerToken: String, trackIds: List<String>): List<TrackAnalysisNode> {
-    val audioFeatures = spotifyRepository.fetchTracksAnalysis(bearerToken, trackIds);
-    val avgDanceability = audioFeatures.audio_features.map { it -> it.danceability }.average()
-    val avgEnergy = audioFeatures.audio_features.map { it -> it.energy }.average()
-    val avgLoudness = audioFeatures.audio_features.map { it -> it.loudness }.average()
-    val avgSpeechiness = audioFeatures.audio_features.map { it -> it.speechiness }.average()
-    val avgInstrumentalness = audioFeatures.audio_features.map { it -> it.instrumentalness }.average()
-    val avgLiveness = audioFeatures.audio_features.map { it -> it.liveness }.average()
-    return listOf(
-      TrackAnalysisNode(avgDanceability * 100, AudioFeatureKeys.DANCEABILITY, DANCEBILITY_DESCRIPTION),
-      TrackAnalysisNode(avgEnergy * 100, AudioFeatureKeys.ENERGY, ENERGY_DESCRIPTION),
-      TrackAnalysisNode(avgLoudness, AudioFeatureKeys.LOUDNESS, LOUDNESS_DESCRIPTION),
-      TrackAnalysisNode(avgSpeechiness * 100, AudioFeatureKeys.SPEECHINESS, SPEECHINESS_DESCRIPTION),
-      TrackAnalysisNode(avgInstrumentalness * 100, AudioFeatureKeys.INSTRUMENTALNESS, INSTRUMENTALNESS_DESCRIPTION),
-      TrackAnalysisNode(avgLiveness * 100, AudioFeatureKeys.LIVENESS, LIVENESS_DESCRIPTION),
-    )
   }
 }

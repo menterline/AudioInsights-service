@@ -11,6 +11,4 @@ interface ISpotifyService {
     suspend fun fetchTopTracks(bearerToken: String, term: String): TopItemsResponse<Track>
 
     suspend fun fetchTopArtists(bearerToken: String, term: String): TopItemsResponse<Artist>
-
-    suspend fun fetchTrackAnalysis(bearerToken: String, trackIds: List<String>) : List<TrackAnalysisNode>
 }

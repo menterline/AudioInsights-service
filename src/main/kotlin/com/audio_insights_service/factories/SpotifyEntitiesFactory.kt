@@ -2,7 +2,7 @@ package com.audio_insights_service.factories
 
 import com.audio_insights_service.entities.*
 
-    fun createDummyTopTracksResponse(): TopItemsResponse<Track> {
+    fun createDummyTopTracksResponse(): TopItemsResponse<SpotifyTrack> {
             val dummyImage = Image(
                 url = "https://example.com/image.jpg",
                 height = 640,
@@ -30,7 +30,7 @@ import com.audio_insights_service.entities.*
                 uri = "spotify:artist:artist_id"
             )
 
-            val dummyTrack = Track(
+            val dummyTrack = SpotifyTrack(
                 id = "track_id",
                 name = "Dummy Track",
                 album = dummyAlbum,
@@ -42,7 +42,8 @@ import com.audio_insights_service.entities.*
                 preview_url = "https://p.scdn.co/mp3-preview/track_preview",
                 track_number = 1,
                 type = "track",
-                uri = "spotify:track:track_id"
+                uri = "spotify:track:track_id",
+                externalUrls = linkedMapOf("spotify" to "https://spotify.com/testTrack")
             )
 
             return TopItemsResponse(
@@ -52,7 +53,7 @@ import com.audio_insights_service.entities.*
                 offset = 0,
                 href = "https://api.spotify.com/v1/me/top/tracks",
                 previous = null,
-                next = null
+                next = null,
             )
 
     }
@@ -82,6 +83,6 @@ fun createDummyTopArtistResponse(): TopItemsResponse<Artist> {
         offset = 0,
         href = "https://api.spotify.com/v1/me/top/artists",
         previous = null,
-        next = null
+        next = null,
     )
 }

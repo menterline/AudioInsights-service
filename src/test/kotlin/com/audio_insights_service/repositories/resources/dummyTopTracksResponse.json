@@ -46,7 +46,10 @@
       "preview_url": "https://p.scdn.co/mp3-preview/track_preview",
       "track_number": 1,
       "type": "track",
-      "uri": "spotify:track:track_id"
+      "uri": "spotify:track:track_id",
+      "external_urls": {
+        "spotify": "https://spotify.com/testTrack"
+      }
     }
   ],
   "total": 1,
